@@ -112,57 +112,41 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			break;
 		case 16:
 			//MFHI function
-			// Move From HI Register
-			// Copies the special purpose HI register to Rd
-			// Rd <- HI
-			
-			//
+			// DO NOT IMPLEMENT
 			
 			break;
 		case 18:
 			//MFLO function
-			
-			
-			//
+			// DO NOT IMPLEMENT
 			
 			break;
 		case 24:
 			//MULT function
-			// Multiply Word
-			// Rs * Rt
-			// Store in (LO, HI)
-			
-			unsigned int result;
-			
-			unsigned int reg = 0;
-			while(y != 0)
-			{
-				if(y & 1)
-				{
-					reg += Rs;
-				}
-				// Left shifts and then assigns to Rs variable
-				Rs <<= 1;
-				// Right shifts and then assigns to Rt variable
-				Rt >>= 1;
-			}
-			result = reg;
-			
-			printf("%i", result);
+			// DO NOT IMPLEMENT
 			
 			break;
 		case 25:
-			//function
+			//MULTU function
+			// DO NOT IMPLEMENT
+			
 			break;
 		case 26:
-			//function
+			//DIV function
+			// DO NOT IMPLEMENT
+			
 			break;
 		case 27:
-			//function
+			//DIVU function
+			// DO NOT IMPLEMENT
+			
 			break;
 		case 32:
 			//ADD function
-			// rs + rt
+			// Rs + Rt
+			// Store in Rd
+			// If overflow occurs, then trap and display error
+			
+			//OVERFLOW DETECTION NEEDS TO BE IMPLEMENTED
 			
 			// Iterate until carry is 0
 			while(Rt !=0)
@@ -182,28 +166,69 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			
 			break;
 		case 33:
-			//function
+			//ADDU function
+			// Rs + Rt
+			// Store in Rd
 			break;
 		case 34:
-			//function
+			//SUB function
 			break;
 		case 35:
-			//function
+			//SUBU function
 			break;
 		case 36:
-			//function
+			//AND function
+			// Rs & Rt
+			// Store in Rd
+			
+			&Rd = Rs & Rd;
+			
 			break;
 		case 37:
-			//function
+			//OR function
+			// Rs | Rt
+			// Store in Rd
+			
+			&Rd = Rs | Rt;
+			
 			break;
 		case 38:
-			//function
+			//XOR function
+			// Rs ^ Rt
+			// Store in Rd
+			
+			&Rd = Rs^Rt;
+			
 			break;
 		case 42:
-			//function
+			//SLT function
+			// Rs < Rt
+			// Store bool value (0 or 1) in Rd
+			if(Rs < Rt)
+			{
+				&Rd = 1;
+			}
+			else
+			{
+				&Rd = 0;
+			}
+			
 			break;
 		case 43:
-			//function
+			//SLTU function
+			// Rs < Rt
+			// Store bool value (0 or 1) in Rd
+			//((0 || Rs) < (0 || Rt))
+			// || bitwise string concat? IMPLEMENT?
+			if((0 || Rs) < (0 || Rt))
+			{
+				&Rd = 1;
+			}
+			else
+			{
+				&Rd = 0;
+			}
+			
 			break;
 		default:
 			printf("Invalid FunctionCode!");
@@ -211,16 +236,20 @@ void ALUSimulator( RegisterFile theRegisterFile,
 		}
 	  break;
 	case 8:
-		//function
+		//ADDI function
+		// Instruction type I
 		break;
 	case 9:
-		//function
+		//ADDIU function
+		// Instruction type I
 		break;
 	case 10:
-		//function
+		//SLTI function
+		// Instruction type I
 		break;
 	case 11:
-		//function
+		//SLTIU function
+		// Instruction type I
 		break;
 	default:
 		printf("Invalid OpCode!");
