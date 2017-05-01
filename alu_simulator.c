@@ -54,7 +54,9 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			result = (int)((unsigned int)Rt >> ShiftAmt);
 			
 			// Prints the SRL instruction result
-			printf("%i", result);
+			//printf("%i", result);
+			
+			//Rd = result;
 			
 			break;
 		case 3:
@@ -77,7 +79,9 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			}
 			
 			// Prints the SRA instruction result
-			printf("%i", result);
+			//printf("%i", result);
+			
+			//Rd = result;
 			
 			break;
 		case 4:
@@ -92,7 +96,9 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			result = (int)((unsigned int)Rt << Rs);
 			
 			// Prints the SLLV instruction result
-			printf("%i", result);
+			//printf("%i", result);
+			
+			//Rd = result;
 			
 			break;
 		case 6:
@@ -107,7 +113,9 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			result = (int)((unsigned int)Rt >> Rs);
 			
 			// Prints the SRL instruction result
-			printf("%i", result);
+			//printf("%i", result);
+			
+			//Rd = result;
 			
 			break;
 		case 16:
@@ -162,26 +170,61 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			}
 			
 			// Print Rs
-			printf("%i", Rs);
+			//printf("%i", Rs);
+			//Rd = Rs;
 			
 			break;
 		case 33:
 			//ADDU function
 			// Rs + Rt
 			// Store in Rd
+			// Adds unsigned integers
+			
+			// Iterate until carry is 0
+			while(Rt !=0)
+			{
+				// carry contains common bits of Rs and Rt
+				unsigned int carry = Rs & Rt;
+				
+				// Sum of bits of Rs and Rt where at least one of the bits is not set
+				Rs = Rs ^ Rt; // The ^ operator is for XOR
+				
+				// carry is shifted by one so that adding it to Rt gives the required sum
+				Rt = carry << 1;
+			}
+			
+			//Rd = Rs;
+			
 			break;
 		case 34:
 			//SUB function
+			// Rs - Rt
+			// Store in Rd
+			// If overflow occurs, trap
+			
+			//
+			// IMPLEMENT
+			//
+			
 			break;
 		case 35:
 			//SUBU function
+			// Rs - Rt
+			// Store in Rd
+			// Subtracts unsigned integers
+			// No integer overflow exception occurs
+			
+			unsigned int result = Rs - Rt;
+			
+			//Rd = result;
+			
 			break;
 		case 36:
 			//AND function
 			// Rs & Rt
 			// Store in Rd
 			
-			&Rd = Rs & Rd;
+			//Rd = Rs & Rd;
 			
 			break;
 		case 37:
@@ -189,7 +232,7 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Rs | Rt
 			// Store in Rd
 			
-			&Rd = Rs | Rt;
+			//Rd = Rs | Rt;
 			
 			break;
 		case 38:
@@ -197,7 +240,7 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Rs ^ Rt
 			// Store in Rd
 			
-			&Rd = Rs^Rt;
+			//Rd = Rs^Rt;
 			
 			break;
 		case 42:
@@ -206,11 +249,11 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Store bool value (0 or 1) in Rd
 			if(Rs < Rt)
 			{
-				&Rd = 1;
+				//Rd = 1;
 			}
 			else
 			{
-				&Rd = 0;
+				//Rd = 0;
 			}
 			
 			break;
@@ -222,11 +265,11 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// || bitwise string concat? IMPLEMENT?
 			if((0 || Rs) < (0 || Rt))
 			{
-				&Rd = 1;
+				//Rd = 1;
 			}
 			else
 			{
-				&Rd = 0;
+				//Rd = 0;
 			}
 			
 			break;
@@ -238,18 +281,38 @@ void ALUSimulator( RegisterFile theRegisterFile,
 	case 8:
 		//ADDI function
 		// Instruction type I
+		
+		//
+		// IMPLEMENT
+		//
+		
 		break;
 	case 9:
 		//ADDIU function
 		// Instruction type I
+		
+		//
+		// IMPLEMENT
+		//
+		
 		break;
 	case 10:
 		//SLTI function
 		// Instruction type I
+		
+		//
+		// IMPLEMENT
+		//
+		
 		break;
 	case 11:
 		//SLTIU function
 		// Instruction type I
+		
+		//
+		// IMPLEMENT
+		//
+		
 		break;
 	default:
 		printf("Invalid OpCode!");
@@ -292,6 +355,8 @@ void printBits(unsigned int num)
 
 int main()
 {
+	// For testing purposes
+
 	unsigned int someNumber;
 	someNumber = 12;
 	unsigned int  result;
