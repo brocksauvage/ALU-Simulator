@@ -281,24 +281,30 @@ void ALUSimulator( RegisterFile theRegisterFile,
 	case 8:
 		//ADDI function
 		// Instruction type I
+		// To add a constant to a 32-bit integer. If overflow occurs, trap
+		// Rs + ImmediateValue
+		// Store in Rt
 		
-		//
-		// IMPLEMENT
-		//
+		//Rt = Rs + ImmediateValue;
 		
 		break;
 	case 9:
 		//ADDIU function
 		// Instruction type I
+		// To add a constant to a 32-bit integer.
+		// Rs + ImmediateValue
+		// Store in Rt
+		// No Integer overflow exception occurs under any circumstances
 		
-		//
-		// IMPLEMENT
-		//
+		//Rt = Rs + ImmediateValue;
 		
 		break;
 	case 10:
 		//SLTI function
 		// Instruction type I
+		// To record the result of a less-than comparison with a constant.
+		// Rs < ImmediateValue
+		// Store in Rt
 		
 		//
 		// IMPLEMENT
@@ -308,6 +314,9 @@ void ALUSimulator( RegisterFile theRegisterFile,
 	case 11:
 		//SLTIU function
 		// Instruction type I
+		// To record the result of an unsigned less-than comparison with a constant.
+		// Rs < ImmediateValue
+		// Store in Rt
 		
 		//
 		// IMPLEMENT
