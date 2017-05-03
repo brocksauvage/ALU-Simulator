@@ -39,42 +39,82 @@ void InternalSwitch( RegisterFile theRegisterFile,
         case 3: //SRA
             break;
         case 4: //SLLV
+            
+            result = theRegisterFile[Rt] << theRegisterFile[Rs];
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 6: //SRLV
+            
+            result = theRegisterFile[Rt] >> theRegisterFile[Rs];
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 32: //ADD
+            
+            result = (signed)((signed)theRegisterFile[Rs] + (signed)theRegisterFile[Rt]);
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 33: //ADDU
+            
+            result = (unsigned)((unsigned)theRegisterFile[Rs] + (unsigned)theRegisterFile[Rt]);
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 34: //SUB
+            
+            result = (signed)((signed)theRegisterFile[Rs] - (signed)theRegisterFile[Rt]);
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 35: //SUBU
+            
+            result = (unsigned)((unsigned)theRegisterFile[Rs] - (unsigned)theRegisterFile[Rt]);
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 36: //AND
             
-            result = Rs & Rt;
+            result = theRegisterFile[Rs] & theRegisterFile[Rt];
             RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
             RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
             
         case 37: //OR
             
-            result = Rs | Rt;
+            result = theRegisterFile[Rs] | theRegisterFile[Rt];
             RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
             RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
             
         case 38: //XOR
             
-            result = Rs ^ Rt;
+            result = theRegisterFile[Rs] ^ theRegisterFile[Rt];
             RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
             RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
             
         case 42: //SLT
+            
+            result = ((signed)theRegisterFile[Rs] < (signed)theRegisterFile[Rt]);
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 43: //SLTU
+            
+            result = (unsigned)((unsigned)theRegisterFile[Rs] < (unsigned)theRegisterFile[Rt]);
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         default:
             printf("Invalid Function Code!");
             break;
@@ -125,8 +165,10 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
     switch(OpCodeResult)
     {
         case 0: //NOOP
+            
             InternalSwitch(theRegisterFile, OpCodeResult, Rs, Rt, Rd, ShiftAmt, FunctionCodeResult, ImmediateValue);
             break;
+            
         case 8: //ADDI
             
             storeVal = (signed)((signed)theRegisterFile[Rs] + (signed)(int32_t)(int16_t)ImmediateValue);
@@ -135,6 +177,7 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
             RegisterFile_Write(theRegisterFile, 1, Rt, storeVal);
             
             break;
+            
         case 9: //ADDIU
             
             storeVal = (unsigned)((unsigned)theRegisterFile[Rs] + (unsigned)(int32_t)(int16_t)ImmediateValue);
@@ -143,6 +186,7 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
             RegisterFile_Write(theRegisterFile, 1, Rt, storeVal);
             
             break;
+            
         case 10: //SLTI
             
             if((signed)theRegisterFile[Rs] < (signed)(int32_t)(int16_t)ImmediateValue)
@@ -158,6 +202,7 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
             RegisterFile_Write(theRegisterFile, 1, Rt, compBool);
             
             break;
+            
         case 11: //SLTIU
             
             if((unsigned)theRegisterFile[Rs] < (signed)(int32_t)(int16_t)ImmediateValue)
@@ -173,6 +218,7 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
             RegisterFile_Write(theRegisterFile, 1, Rt, compBool);
             
             break;
+            
         default:
             printf("Invalid OpCode!");
             break;
