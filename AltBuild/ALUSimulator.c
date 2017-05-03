@@ -28,6 +28,8 @@ void InternalSwitch( RegisterFile theRegisterFile,
                     uint32_t FunctionCodeResult,
                     uint32_t ImmediateValue ) {
     
+    uint32_t result = 0;
+    
     switch(FunctionCodeResult)
     {
         case 0: //SLL
@@ -49,11 +51,26 @@ void InternalSwitch( RegisterFile theRegisterFile,
         case 35: //SUBU
             break;
         case 36: //AND
+            
+            result = Rs & Rt;
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 37: //OR
+            
+            result = Rs | Rt;
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 38: //XOR
+            
+            result = Rs ^ Rt;
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rd, result);
             break;
+            
         case 42: //SLT
             break;
         case 43: //SLTU
@@ -87,6 +104,11 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
            Rs,
            Rt,
            Rd );
+    
+    printf( ">>>>ALU: ShiftAmt: %02X; FunctionCode: %02X; ImmediateValue: %04X;\n",
+           ShiftAmt,
+           FunctionCode,
+           ImmediateValue );
     
     unsigned int OpCodeResult;
     unsigned int mask;
@@ -155,7 +177,14 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
             printf("Invalid OpCode!");
             break;
     }
-				
+	
+    printf("\n\n\n\n\n\n\n");
+    printf( ">>ALU: Opcode: %02X; Rs: %02X; Rt: %02X; Rd: %02X;\n",
+           OpCode,
+           Rs,
+           Rt,
+           Rd );
+    
     printf( ">>>>ALU: ShiftAmt: %02X; FunctionCode: %02X; ImmediateValue: %04X;\n",
            ShiftAmt,
            FunctionCode,
