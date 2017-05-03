@@ -96,19 +96,60 @@ extern void ALUSimulator( RegisterFile theRegisterFile,
     
     unsigned int FunctionCodeResult = mask & FunctionCode;
     unsigned int result;
-   
+    
+    uint32_t compBool = 0;
+    uint32_t storeVal;
+    
     switch(OpCodeResult)
     {
         case 0: //NOOP
             InternalSwitch(theRegisterFile, OpCodeResult, Rs, Rt, Rd, ShiftAmt, FunctionCodeResult, ImmediateValue);
             break;
         case 8: //ADDI
+            
+            storeVal = (signed)((signed)theRegisterFile[Rs] + (signed)(int32_t)(int16_t)ImmediateValue);
+            
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rt, storeVal);
+            
             break;
         case 9: //ADDIU
+            
+            storeVal = (unsigned)((unsigned)theRegisterFile[Rs] + (unsigned)(int32_t)(int16_t)ImmediateValue);
+            
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rt, storeVal);
+            
             break;
         case 10: //SLTI
+            
+            if((signed)theRegisterFile[Rs] < (signed)(int32_t)(int16_t)ImmediateValue)
+            {
+                compBool = 1;
+            }
+            else
+            {
+                compBool = 0;
+            }
+            
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rt, compBool);
+            
             break;
         case 11: //SLTIU
+            
+            if((unsigned)theRegisterFile[Rs] < (signed)(int32_t)(int16_t)ImmediateValue)
+            {
+                compBool = 1;
+            }
+            else
+            {
+                compBool = 0;
+            }
+            
+            RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            RegisterFile_Write(theRegisterFile, 1, Rt, compBool);
+            
             break;
         default:
             printf("Invalid OpCode!");
