@@ -9,6 +9,8 @@
 
 #include "alu_simulator.h"
 
+//NOTE:ADDU AND ADD LOOK THE SAME
+
 void ALUSimulator( RegisterFile theRegisterFile,
 							uint32_t OpCode,
 							uint32_t Rs, uint32_t Rt, uint32_t Rd,
@@ -25,13 +27,25 @@ void ALUSimulator( RegisterFile theRegisterFile,
 	mask = generateMask(0,5); // Generates mask for last 6 bits.
 	OpCodeResult = mask & OpCode; // Applies mask. The OpCodeResult variable contains last 6 bits
 	
+    printf( ">>ALU: Opcode: %02X; Rs: %02X; Rt: %02X; Rd: %02X;\n",
+           OpCode,
+           Rs,
+           Rt,
+           Rd );
+				
+    printf( ">>>>ALU: ShiftAmt: %02X; FunctionCode: %02X; ImmediateValue: %04X;\n",
+           ShiftAmt,
+           FunctionCode,
+           ImmediateValue );
+    
 	switch ( OpCodeResult )
 	{
+    unsigned int functionCodeResult;
+    unsigned int result;
+            
 	case 0:
 		// Goes through Function/Register Code
-		
-		unsigned int functionCodeResult;
-		
+            
 		functionCodeResult = mask & FunctionCode; // Applies mask. The functionResult variable contains last 6 bits
 		
 		switch ( functionCodeResult )
@@ -39,16 +53,13 @@ void ALUSimulator( RegisterFile theRegisterFile,
 		case 0:
 			//function
 			break;
-		case 0:
-			// redundant function
-			break;
 		case 2:
 			//SRL function -CHECK
 			// Shift Word Right Logical
 			// Rt >> ShiftAmt where ShiftAmt is the bit shift count
 			// Store in Rd -STORE
 			
-			unsigned int result;
+			
 			
 			// Shifts the bits on Rt to the right by ShiftAmt
 			result = (int)((unsigned int)Rt >> ShiftAmt);
@@ -65,7 +76,7 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Rt >> ShiftAmt preserve the sign bit
 			// Store in Rd -STORE
 			
-			unsigned int result;
+			
 			
 			if(Rt < 0 && ShiftAmt > 0)
 			{
@@ -90,7 +101,6 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Rt << Rs
 			// Store in Rd
 			
-			unsigned int result;
 			
 			// Shifts the bits on Rt to the left by Rs
 			result = (int)((unsigned int)Rt << Rs);
@@ -106,8 +116,6 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Shift Word Right Logical Variable
 			// Rt >> Rs
 			// Store in Rd
-			
-			unsigned int result;
 			
 			// Shifts the bits on Rt to the right by Rs
 			result = (int)((unsigned int)Rt >> Rs);
@@ -179,21 +187,10 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Rs + Rt
 			// Store in Rd
 			// Adds unsigned integers
-			
+			// Since Rs and Rt are unsigned, we can just straight-up add them.
 			// Iterate until carry is 0
-			while(Rt !=0)
-			{
-				// carry contains common bits of Rs and Rt
-				unsigned int carry = Rs & Rt;
-				
-				// Sum of bits of Rs and Rt where at least one of the bits is not set
-				Rs = Rs ^ Rt; // The ^ operator is for XOR
-				
-				// carry is shifted by one so that adding it to Rt gives the required sum
-				Rt = carry << 1;
-			}
 			
-			//Rd = Rs;
+			Rd = Rs + Rt;
 			
 			break;
 		case 34:
@@ -214,7 +211,7 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Subtracts unsigned integers
 			// No integer overflow exception occurs
 			
-			unsigned int result = Rs - Rt;
+			result = Rs - Rt;
 			
 			//Rd = result;
 			
@@ -318,6 +315,17 @@ void ALUSimulator( RegisterFile theRegisterFile,
 		printf("Invalid OpCode!");
 		break;
 	}
+    
+    printf( ">>ALU: Opcode: %02X; Rs: %02X; Rt: %02X; Rd: %02X;\n",
+           OpCode,
+           Rs,
+           Rt,
+           Rd );
+				
+    printf( ">>>>ALU: ShiftAmt: %02X; FunctionCode: %02X; ImmediateValue: %04X;\n",
+           ShiftAmt,
+           FunctionCode,
+           ImmediateValue );
 }
 
 //
@@ -353,27 +361,7 @@ void printBits(unsigned int num)
     }
 }
 
-int main()
-{
-	// For testing purposes
 
-	unsigned int someNumber;
-	someNumber = 12;
-	unsigned int  result;
-	unsigned int mask;
-	
-	mask = generateMask(0,5);
-	result = mask & someNumber;
-	
-        printBits(someNumber);
-        printf("\n\n");
-        printBits(mask);
-        printf("\n\n");
-        printBits(result);
-	
-	
-	return 0;
-}
 
 
 

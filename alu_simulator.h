@@ -6,6 +6,7 @@
 #ifndef alu_simulator_h
 #define alu_simulator_h
 
+#include "RegisterFile_01.h"
 //
 
 void ALUSimulator( RegisterFile theRegisterFile,
@@ -24,7 +25,7 @@ unsigned generateMask(unsigned a, unsigned b);
 
 // Prints bits of an int
 // Example usage: printBits(5);
-void printBits(uint32_t num)
+void printBits(unsigned int num);
 
 
 #endif
