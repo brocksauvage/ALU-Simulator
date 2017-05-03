@@ -157,21 +157,13 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			//OVERFLOW DETECTION NEEDS TO BE IMPLEMENTED
 			
 			// Iterate until carry is 0
-			while(Rt !=0)
-			{
-				// carry contains common bits of Rs and Rt
-				unsigned int carry = Rs & Rt;
-				
-				// Sum of bits of Rs and Rt where at least one of the bits is not set
-				Rs = Rs ^ Rt; // The ^ operator is for XOR
-				
-				// carry is shifted by one so that adding it to Rt gives the required sum
-				Rt = carry << 1;
-			}
 			
-			// Print Rs
-			//printf("%i", Rs);
-			//Rd = Rs;
+			uint32_t result;
+			
+			result = (signed)((signed)theRegisterFile[Rs] + (signed)theRegisterFile[Rt]);
+			
+			RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            		RegisterFile_Write(theRegisterFile, 1, Rd, result);
 			
 			break;
 		case 33:
@@ -181,19 +173,12 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Adds unsigned integers
 			
 			// Iterate until carry is 0
-			while(Rt !=0)
-			{
-				// carry contains common bits of Rs and Rt
-				unsigned int carry = Rs & Rt;
-				
-				// Sum of bits of Rs and Rt where at least one of the bits is not set
-				Rs = Rs ^ Rt; // The ^ operator is for XOR
-				
-				// carry is shifted by one so that adding it to Rt gives the required sum
-				Rt = carry << 1;
-			}
+			uint32_t result;
 			
-			//Rd = Rs;
+			result = (unsigned)((unsigned)theRegisterFile[Rs] + (unsigned)theRegisterFile[Rt]);
+			
+			RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            		RegisterFile_Write(theRegisterFile, 1, Rd, result);
 			
 			break;
 		case 34:
@@ -202,9 +187,12 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Store in Rd
 			// If overflow occurs, trap
 			
-			//
-			// IMPLEMENT
-			//
+			uint32_t result;
+			
+			result = (signed)((signed)theRegisterFile[Rs] - (signed)theRegisterFile[Rt]);
+			
+			RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            		RegisterFile_Write(theRegisterFile, 1, Rd, result);
 			
 			break;
 		case 35:
@@ -214,10 +202,11 @@ void ALUSimulator( RegisterFile theRegisterFile,
 			// Subtracts unsigned integers
 			// No integer overflow exception occurs
 			
-			unsigned int result = Rs - Rt;
+			result = (unsigned)((unsigned)theRegisterFile[Rs] - (unsigned)theRegisterFile[Rt]);
 			
-			//Rd = result;
-			
+			RegisterFile_Read(theRegisterFile, Rs, &theRegisterFile[Rs], Rt, &theRegisterFile[Rt]);
+            		RegisterFile_Write(theRegisterFile, 1, Rd, result);
+						
 			break;
 		case 36:
 			//AND function
