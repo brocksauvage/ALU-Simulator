@@ -20,7 +20,7 @@
 #include <stdio.h>
 
 #include "RegisterFile_01.h"
-#include "alu_simulator.h"
+#include "ALUSimulator.h"
 
 //
 //	Define a structure to hold a decoded MIPS instruction.
